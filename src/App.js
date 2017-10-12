@@ -10,9 +10,9 @@ class App extends Component {
 
     return (
       <div className="film-library">
-        <FilmListing movies={TMDB.films}/>
+        <FilmListing films={TMDB.films}/>
 
-        <FilmDetails movies={TMDB.films}/>
+        <FilmDetails films={TMDB.films}/>
       </div>
     );
   }
