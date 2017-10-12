@@ -11,18 +11,23 @@ class App extends Component {
     this.state = {
       films: TMDB.films,
       faves: [],
-      current: {}
+      current: {},
+      filterIsFaves: false
     }
     this.handleFaveToggle = this.handleFaveToggle.bind(this)
+    this.handleFilterToggle = this.handleFilterToggle.bind(this)
   }
 
   handleFaveToggle(e, film) {
     e.stopPropagation()
-    let favesClone = this.state.faves 
+    let favesClone = this.state.faves.slice() 
     const filmIndex = favesClone.indexOf(film)
+      
     
     if (filmIndex > -1) {
-      favesClone.splice(filmIndex)
+      
+      favesClone.splice(filmIndex,1)
+      
       this.setState({
         faves: favesClone
       })
@@ -30,16 +35,29 @@ class App extends Component {
       this.setState({
         faves: [...favesClone, film]
       })
-      
     }
+  }
 
+  handleFilterToggle() {
+    this.setState({
+      filterIsFaves: !this.state.filterIsFaves
+    })
   }
 
   render() {
+    console.log(this.state.faves);
+    
 
     return (
       <div className="film-library">
-        <FilmListing films={this.state.films} faves={this.state.faves} faveToggle={this.handleFaveToggle} favesCount={this.state.faves.length}/>
+        <FilmListing 
+          films={this.state.filterIsFaves ? this.state.faves : this.state.films } 
+          faves={this.state.faves} 
+          faveToggle={this.handleFaveToggle} 
+          favesCount={this.state.faves.length}
+          filterIsFaves={this.state.filterIsFaves}
+          handleFilterToggle={this.handleFilterToggle}
+        />
 
         <FilmDetails films={this.state.current}/>
       </div>
